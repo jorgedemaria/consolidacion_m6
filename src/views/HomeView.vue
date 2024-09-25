@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Lista de Juegos</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <h1 class="font-bold mb-4 pl-6">Lista de Juegos</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div
         v-for="game in games"
         :key="game.id"
@@ -12,41 +12,45 @@
           alt="carátula"
           class="w-full h-48 object-cover rounded-t-lg"
         />
-        <h2 class="text-xl font-semibold mt-2">{{ game.name }}</h2>
+        <h1 class="font-bold mt-2">{{ game.name }}</h1>
         <p class="mt-1">
-          Géneros: {{ game.genres.map((genre) => genre.name).join(", ") }}
+          Géneros: {{ game.genres.map((genre) => genre.name).join(", ") }} 🎮 
         </p>
-        <p class="mt-1">Rating: {{ game.rating }}</p>
-        <p class="mt-1">Fecha de lanzamiento: {{ game.released }}</p>
-        <p class="mt-1">Última actualización: {{ game.updated }}</p>
-        <button
-          @click="goToOpinions(game.id)"
-          class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Opinar
-        </button>
+        <p class="mt-1">Rating: {{ game.rating }} ⭐️</p>
+        <p class="mt-1">Fecha de lanzamiento: {{ game.released }} 📅</p>
+        <div class="flex items-center justify-between">
+          <button
+            @click="goToOpinions(game.id)"
+            class="mt-4 text-white px-4 py-2 bg-violet-700 rounded hover:bg-violet-500"
+          >
+            Opinar
+          </button>
+          <HeartButton />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import HeartButton from "@/components/HeartButton.vue";
+
 export default {
+  components: {
+    HeartButton,
+  },
   data() {
     return {
-      games: [], //  Lista de juegos
+      games: [],
     };
   },
   methods: {
-    // Método que navega a la vista de opiniones
     goToOpinions(gameId) {
-      this.$router.push({ name: "Opiniones", params: { id: gameId } });
+      this.$router.push({ name: "opinions", params: { id: gameId } });
     },
-    // Método para obtener los juegos desde la API usando fetch
     async fetchGames() {
       try {
-        const API_KEY = "6dc73930d6744759a55ed8ad18d45671";
-        console.log(API_KEY);
+        const API_KEY = process.env.VUE_APP_API_KEY;
         const API_URL = `https://api.rawg.io/api/games?key=${API_KEY}`;
 
         const response = await fetch(API_URL);
@@ -67,4 +71,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+button {
+  font-size: 12px;
+}
+</style>

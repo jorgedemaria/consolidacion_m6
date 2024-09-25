@@ -1,21 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import OpinionsView from '../views/OpinionsView.vue';
+import NotFound from '@/components/NotFound.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: HomeView,
   },
   {
-    path: '/opinions/:id',
-    name: 'Opiniones',
+    path: '/opinions/:id', 
+    name: 'opinions',
     component: OpinionsView,
+    props: true, 
   },
   {
-    path: '/:catchAll(.*)',
-    redirect: { name: 'Home' },
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
   },
 ];
 
